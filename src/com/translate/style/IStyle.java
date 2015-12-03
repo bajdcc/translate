@@ -14,10 +14,4 @@ public interface IStyle {
 	 * @return 词法分析器
 	 */
 	Lexer createLexer(String string); 
-	
-	/**
-	 * 创建翻译方案的单例
-	 * @return 翻译方案的单例
-	 */
-	IStyle singleton();
 }

@@ -12,11 +12,11 @@ public class RmbStyle implements IStyle {
 	static private RmbStyle style;
 	
 	@Override
-	public Lexer createLexer(String string) {		
-		return new RmbLexer(string, this);
+	public Lexer createLexer(String text) {
+		return new RmbLexer(text, this);
 	}
 
-	public IStyle singleton() {
+	static public synchronized IStyle singleton() {
 		if (style == null) {
 			style = new RmbStyle();
 		}

@@ -8,7 +8,7 @@ import com.translate.style.rmb.RmbStyle;
  */
 public class StyleFactory implements IStyleController {
 
-	static private StyleFactory one = new StyleFactory();
+	static private StyleFactory one;
 	
 	public enum StyleType {
 		RMB
@@ -18,13 +18,16 @@ public class StyleFactory implements IStyleController {
 	public IStyle createStyle(StyleType type) {
 		switch (type) {
 		case RMB:
-			return new RmbStyle();
+			return RmbStyle.singleton();
 		default:
 			return null;
 		}
 	}
 	
-	static public IStyleController singleton() {
+	static public synchronized IStyleController singleton() {
+		if (one == null) {
+			one = new StyleFactory();
+		}
 		return one;
 	}
 }

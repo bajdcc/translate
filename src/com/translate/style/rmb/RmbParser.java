@@ -11,8 +11,8 @@ import com.translate.style.StyleFactory.StyleType;
  */
 public class RmbParser extends Parser {
 
-	public RmbParser(String string) {
-		super(string, StyleFactory.singleton().createStyle(StyleType.RMB));		
+	public RmbParser(String text) {
+		super(text, StyleFactory.singleton().createStyle(StyleType.RMB));		
 	}
 	
 	@Override
