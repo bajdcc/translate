@@ -1,10 +1,13 @@
 package com.translate.style;
 
+import java.util.List;
+
 import com.translate.lexer.Lexer;
+import com.translate.lexer.inst.ILexerStep;
 
 /**
- * @author bajdc_000
  * 翻译方案的通式
+ * @author bajdc_000
  */
 public interface IStyle {
 
@@ -14,4 +17,10 @@ public interface IStyle {
 	 * @return 词法分析器
 	 */
 	Lexer createLexer(String string); 
+	
+	/**
+	 * 返回词法分析的指令步骤
+	 * @return 指令步骤
+	 */
+	List<ILexerStep> getLexerStep();
 }

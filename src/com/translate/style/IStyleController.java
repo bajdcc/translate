@@ -3,8 +3,8 @@ package com.translate.style;
 import com.translate.style.StyleFactory.StyleType;
 
 /**
- * @author bajdc_000
  * 翻译方案的工厂接口
+ * @author bajdc_000
  */
 public interface IStyleController {
 

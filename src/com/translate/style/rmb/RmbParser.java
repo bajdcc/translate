@@ -6,8 +6,8 @@ import com.translate.style.StyleFactory;
 import com.translate.style.StyleFactory.StyleType;
 
 /**
- * @author bajdc_000
  * 人民币翻译方案
+ * @author bajdc_000
  */
 public class RmbParser extends Parser {
 
