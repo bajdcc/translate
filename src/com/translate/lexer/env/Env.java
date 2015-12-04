@@ -49,4 +49,9 @@ public class Env {
 	 * 是否刚执行过跳转指令
 	 */
 	public boolean jmp = false;
+	
+	/**
+	 * 是否需要执行PASS指令
+	 */
+	public boolean pass = false;
 }

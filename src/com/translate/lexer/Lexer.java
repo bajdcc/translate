@@ -92,6 +92,11 @@ public abstract class Lexer {
 	 */
 	private boolean runStep(Env env) throws OperationNotSupportedException {
 		for (LexerStepType type : LexerStepType.values()) {
+			if (env.pass) {
+				env.pass = false;
+				itText.next();
+				break;
+			}
 			swapEnvironment(type, env);
 			List<ILexerInst> insts = env.step.getStep(type);
 			if (insts != null) {
@@ -152,7 +157,7 @@ public abstract class Lexer {
 			env.reg = env.reg == 0 ? 1 : 0;
 			break;
 		case Pass:
-			itText.next();
+			env.pass = true;
 			break;
 		case RecordEnd:
 			env.ref.setEnd(itText.index());
@@ -191,7 +196,6 @@ public abstract class Lexer {
 			env.ch = itText.current();
 			break;
 		case End:
-			itText.next();
 			break;
 		case Next:
 			// 准备好当前字符和下一个字符
