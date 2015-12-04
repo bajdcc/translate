@@ -1,7 +1,6 @@
 package com.translate.style.rmb;
 
 import com.translate.parser.Parser;
-import com.translate.style.IStyle;
 import com.translate.style.StyleFactory;
 import com.translate.style.StyleFactory.StyleType;
 

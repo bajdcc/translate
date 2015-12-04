@@ -3,7 +3,7 @@ package com.translate.style;
 import java.util.List;
 
 import com.translate.lexer.Lexer;
-import com.translate.lexer.inst.ILexerStep;
+import com.translate.lexer.step.ILexerStep;
 
 /**
  * 翻译方案的通式

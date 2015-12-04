@@ -1,4 +1,4 @@
-package com.translate.lexer.inst;
+package com.translate.lexer.step;
 
 /**
  * 词法分析的步骤类型

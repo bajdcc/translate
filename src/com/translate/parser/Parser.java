@@ -1,8 +1,7 @@
 package com.translate.parser;
 
-import java.util.List;
-
 import com.translate.lexer.Lexer;
+import com.translate.lexer.match.MatchGroup;
 import com.translate.style.IStyle;
 
 /**
@@ -20,7 +19,8 @@ public abstract class Parser {
 	
 	protected void init() {
 		lexer.match();
-		List<String> group = lexer.getGroup();
+		MatchGroup group = lexer.getGroup();
+		System.out.println(group.toString());
 		//parse group[...]
 		//Tree tree = parse(group);
 		//tree save

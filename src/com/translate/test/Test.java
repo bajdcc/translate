@@ -6,7 +6,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		
-		RmbParser parser = new RmbParser("12345");
+		RmbParser parser = new RmbParser("00001234");
 		System.out.println(parser.toString());
 	}
 }

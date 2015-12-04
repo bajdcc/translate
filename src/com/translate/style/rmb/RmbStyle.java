@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.translate.lexer.Lexer;
 import com.translate.lexer.inst.ILexerInst;
-import com.translate.lexer.inst.ILexerStep;
 import com.translate.lexer.inst.InstFactory;
 import com.translate.lexer.inst.LexerInstType;
-import com.translate.lexer.inst.LexerStep;
-import com.translate.lexer.inst.LexerStepType;
+import com.translate.lexer.step.ILexerStep;
+import com.translate.lexer.step.LexerStep;
+import com.translate.lexer.step.LexerStepType;
 import com.translate.style.IStyle;
 
 /**
@@ -40,15 +40,22 @@ public class RmbStyle implements IStyle {
 		step = new LexerStep();
 		lexerSteps.add(step);
 		insts = new ArrayList<ILexerInst>();
+		insts.add(InstFactory.createInst(LexerInstType.IsRecording));
+		insts.add(InstFactory.createInst(LexerInstType.If, -1));
+		insts.add(InstFactory.createInst(LexerInstType.Mov, 1));
+		insts.add(InstFactory.createInst(LexerInstType.MatchReg));
+		insts.add(InstFactory.createInst(LexerInstType.If, 6));
+		insts.add(InstFactory.createInst(LexerInstType.Stop));
 		insts.add(InstFactory.createInst(LexerInstType.RecordStart));
-		step.setStep(LexerStepType.Begin, insts);
+		insts.add(InstFactory.createInst(LexerInstType.Pass));
+		step.setStep(LexerStepType.Current, insts);
 		insts = new ArrayList<ILexerInst>();
-		insts.add(InstFactory.createInst(LexerInstType.Mov, 0));
+		insts.add(InstFactory.createInst(LexerInstType.Mov, 1));
 		insts.add(InstFactory.createInst(LexerInstType.MatchReg));
 		insts.add(InstFactory.createInst(LexerInstType.If, 5));
 		insts.add(InstFactory.createInst(LexerInstType.RecordEnd));
 		insts.add(InstFactory.createInst(LexerInstType.Stop));
-		insts.add(InstFactory.createInst(LexerInstType.Exit));
+		insts.add(InstFactory.createInst(LexerInstType.Pass));
 		step.setStep(LexerStepType.Next, insts);
 	}	
 

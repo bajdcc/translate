@@ -4,19 +4,13 @@ package com.translate.lexer.inst;
  * 一地址
  * @author bajdc_000
  */
-public class OneInst implements ILexerInst {
+public class OneInst extends ZeroInst {
 	
-	private LexerInstType type;
 	private int data;
 	
 	public OneInst(LexerInstType type, int data) {
-		this.type = type;
+		super(type);
 		this.data = data;
-	}
-	
-	@Override
-	public LexerInstType getType() {
-		return type;
 	}
 
 	@Override
@@ -24,4 +18,8 @@ public class OneInst implements ILexerInst {
 		return data;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " " + data;
+	}
 }

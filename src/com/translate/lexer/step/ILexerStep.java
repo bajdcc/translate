@@ -1,6 +1,8 @@
-package com.translate.lexer.inst;
+package com.translate.lexer.step;
 
 import java.util.List;
+
+import com.translate.lexer.inst.ILexerInst;
 
 /**
  * 词法分析的步骤

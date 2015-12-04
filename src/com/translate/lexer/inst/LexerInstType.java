@@ -7,10 +7,12 @@ package com.translate.lexer.inst;
 public enum LexerInstType {
 
 	//基于字符串
+	IsRecording,
 	RecordStart,
 	RecordEnd,
 	JumpState,
 	MatchReg,
+	Pass,
 	Stop,
 	
 	//基于指令

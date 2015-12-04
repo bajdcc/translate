@@ -22,4 +22,8 @@ public class ZeroInst implements ILexerInst {
 		return -1;
 	}
 
+	@Override
+	public String toString() {
+		return type.toString();
+	}
 }
