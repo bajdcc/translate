@@ -54,4 +54,9 @@ public class Env {
 	 * 是否需要执行PASS指令
 	 */
 	public boolean pass = false;
+	
+	/**
+	 * 是否需要退出步骤
+	 */
+	public boolean exitStep = false;
 }

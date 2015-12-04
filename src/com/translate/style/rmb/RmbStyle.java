@@ -44,17 +44,16 @@ public class RmbStyle implements IStyle {
 		insts.add(InstFactory.createInst(LexerInstType.If, -1));
 		insts.add(InstFactory.createInst(LexerInstType.Mov, 1));
 		insts.add(InstFactory.createInst(LexerInstType.MatchReg));
-		insts.add(InstFactory.createInst(LexerInstType.If, 6));
-		insts.add(InstFactory.createInst(LexerInstType.Stop));
-		insts.add(InstFactory.createInst(LexerInstType.RecordStart));
 		insts.add(InstFactory.createInst(LexerInstType.Pass));
+		insts.add(InstFactory.createInst(LexerInstType.If, 7));
+		insts.add(InstFactory.createInst(LexerInstType.Exit));
+		insts.add(InstFactory.createInst(LexerInstType.RecordStart));
 		step.setStep(LexerStepType.Current, insts);
 		insts = new ArrayList<ILexerInst>();
 		insts.add(InstFactory.createInst(LexerInstType.Mov, 1));
 		insts.add(InstFactory.createInst(LexerInstType.MatchReg));
-		insts.add(InstFactory.createInst(LexerInstType.If, 5));
+		insts.add(InstFactory.createInst(LexerInstType.If, 4));
 		insts.add(InstFactory.createInst(LexerInstType.RecordEnd));
-		insts.add(InstFactory.createInst(LexerInstType.Stop));
 		insts.add(InstFactory.createInst(LexerInstType.Pass));
 		step.setStep(LexerStepType.Next, insts);
 	}	

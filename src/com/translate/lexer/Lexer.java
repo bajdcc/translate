@@ -37,7 +37,7 @@ public abstract class Lexer {
 	public Lexer(String text, IStyle style) {
 		this.text = text;
 		this.style = style;
-		this.itText = new RefString(this.text).iterator().lookAhead();
+		this.itText = new RefString(this.text).iterator().skip('0').lookAhead();
 		this.group = new MatchGroup();
 		initMatchers();
 	}
@@ -66,7 +66,8 @@ public abstract class Lexer {
 		Env env = new Env();
 		try {
 			while (env.state != -1) {
-				System.out.println(env.state + " " + itText.index());
+				System.out.println(String.format("# State=%d, Index=%d, Current='%c'",
+						env.state, itText.index(), itText.current()));
 				// 按照当前状态，从steps里面取出相应的指令，并且运行指令
 				// 当且仅当指令为stop时，退出
 
@@ -92,9 +93,8 @@ public abstract class Lexer {
 	 */
 	private boolean runStep(Env env) throws OperationNotSupportedException {
 		for (LexerStepType type : LexerStepType.values()) {
-			if (env.pass) {
-				env.pass = false;
-				itText.next();
+			if (env.exitStep) {
+				env.exitStep = false;
 				break;
 			}
 			swapEnvironment(type, env);
@@ -102,8 +102,8 @@ public abstract class Lexer {
 			if (insts != null) {
 				for (env.addr = 0; env.addr != -1 && env.addr < insts.size();) {
 					env.inst = insts.get(env.addr);
-					System.err.println(String.format("[%s] %d %s", type.toString(), env.addr, env.inst));
-					if (!runInsts(env)) {
+					System.out.println(String.format("[%s] %d %s", type.toString(), env.addr, env.inst));
+					if (!runInst(env)) {
 						return false;
 					}
 					if (!env.jmp) {
@@ -113,6 +113,10 @@ public abstract class Lexer {
 					}
 				}
 			}
+		}
+		if (env.pass) {
+			env.pass = false;
+			itText.next();
 		}
 		return itText.available();
 	}
@@ -124,12 +128,16 @@ public abstract class Lexer {
 	 *            环境
 	 * @throws OperationNotSupportedException
 	 */
-	private boolean runInsts(Env env) throws OperationNotSupportedException {
+	private boolean runInst(Env env) throws OperationNotSupportedException {
 		ILexerInst inst = env.inst;
 		LexerInstType type = inst.getType();
 		switch (type) {
 		case Exit:
+			env.jmp = true;
 			env.addr = -1;
+			break;
+		case ExitStep:
+			env.exitStep = true;
 			break;
 		case If:
 			if (env.reg == 1) {

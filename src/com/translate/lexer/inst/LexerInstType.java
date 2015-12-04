@@ -19,6 +19,7 @@ public enum LexerInstType {
 	If,
 	Jmp,
 	Exit,
+	ExitStep,
 	Mov,
 	Not,
 }
