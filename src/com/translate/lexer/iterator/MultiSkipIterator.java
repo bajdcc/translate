@@ -4,48 +4,56 @@ import com.translate.lexer.match.ILexerMatcher;
 
 /**
  * 多区间过滤
+ * 
  * @author bajdc_000
  */
 public class MultiSkipIterator extends RefStringIteratorBase {
 
-	private IRefStringIterator iterator;
 	private ILexerMatcher matcher;
-	private char ch;
-	
+
 	public MultiSkipIterator(IRefStringIterator iterator, ILexerMatcher matcher) {
-		this.iterator = iterator;
+		super(iterator);
 		this.matcher = matcher;
-		this.ch = 0;
 	}
-	
+
+	private boolean diff(char ch) {
+		return ch != 0 && matcher.match(ch) == 0;
+	}
+
 	@Override
 	public int index() {
-		return iterator.index();
+		return available() ? iterator.index() : -1;
 	}
-	
+
 	@Override
 	public char current() {
-		return ch;
+		return available() ? iterator.current() : 0;
+	}
+
+	@Override
+	public char ahead() {
+		return available() ? iterator.ahead() : 0;
 	}
 
 	@Override
 	public boolean available() {
-		if (ch == 0) {
-			for (; iterator.available(); iterator.next()) {
-				ch = iterator.current();
-				if (matcher.match(ch) == 0) {
-					iterator.next();
-					return true;
-				}				
-			}
+		if (!iterator.available())
 			return false;
+		if (!diff(iterator.current())) {
+			for (; iterator.available(); iterator.next()) {
+				if (diff(iterator.ahead())) {
+					iterator.next();
+					break;
+				}
+			}
+			return iterator.available();
 		}
 		return true;
 	}
 
-	@Override
 	public void next() {
-		ch = 0;
-		available();
+		if (available()) {
+			iterator.next();
+		}
 	}
 }

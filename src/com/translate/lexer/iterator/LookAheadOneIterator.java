@@ -7,15 +7,14 @@ package com.translate.lexer.iterator;
  */
 public class LookAheadOneIterator extends RefStringIteratorBase {
 
-	private IRefStringIterator iterator;
-	private int index;
 	private char chCurrent;
 	private char chNext;
+	private int index;
 	
 	public LookAheadOneIterator(IRefStringIterator iterator) {
-		this.iterator = iterator;
-		this.chCurrent = this.iterator.current();
+		super(iterator);
 		this.index = this.iterator.index();
+		this.chCurrent = this.iterator.current();
 		this.iterator.next();
 		this.chNext = this.iterator.current();
 	}
@@ -30,9 +29,7 @@ public class LookAheadOneIterator extends RefStringIteratorBase {
 		return this.chCurrent;
 	}
 
-	/**
-	 * @return 向前看一个字符
-	 */
+	@Override
 	public char ahead() {
 		return this.chNext;
 	}

@@ -18,5 +18,10 @@ public class WordMatcher implements ILexerMatcher {
 			one = new WordMatcher();
 		}
 		return one;
+	}	
+	
+	@Override
+	public String toString() {
+		return "Letter or Digit";
 	}
 }

@@ -17,4 +17,8 @@ public class CharacterMatcher implements ILexerMatcher {
 		return this.character == ch ? 1 : 0;
 	}
 
+	@Override
+	public String toString() {
+		return "Character '" + character + "'";
+	}
 }

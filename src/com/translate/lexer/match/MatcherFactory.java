@@ -9,19 +9,19 @@ public class MatcherFactory implements IMatcherFactory {
 	private static MatcherFactory one;
 	
 	public enum LexerMatcherType {
-		Letter,
-		Number,
-		Word,
+		LETTER,
+		NUMBER,
+		WORD,
 	}
 	
 	@Override
 	public ILexerMatcher createMatcher(LexerMatcherType type) {
 		switch (type) {
-		case Letter:
+		case LETTER:
 			return LetterMatcher.singleton();
-		case Number:
+		case NUMBER:
 			return NumberMatcher.singleton();
-		case Word:
+		case WORD:
 			return WordMatcher.singleton();
 		default:
 			return null;

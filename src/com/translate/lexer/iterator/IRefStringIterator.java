@@ -20,6 +20,11 @@ public interface IRefStringIterator {
 	char current();
 	
 	/**
+	 * @return 向前看一个字符
+	 */
+	char ahead();
+	
+	/**
 	 * @return 是否可以继续
 	 */
 	boolean available();
@@ -57,4 +62,19 @@ public interface IRefStringIterator {
 	 * @return 迭代器
 	 */
 	LookAheadOneIterator lookAhead();
+	
+	
+	/**
+	 * 定位第一次找到的该字符的位置，从左到右
+	 * @param matcher 字符
+	 * @return 查找迭代器
+	 */
+	IRefStringFindIterator findFirst(char matcher);
+	
+	/**
+	 * 指定从流中提取字符的数量
+	 * @param count 数量
+	 * @return 迭代器
+	 */
+	IRefStringIterator take(int count);
 }

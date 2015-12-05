@@ -24,6 +24,6 @@ public class ZeroInst implements ILexerInst {
 
 	@Override
 	public String toString() {
-		return type.toString();
+		return type.getName();
 	}
 }

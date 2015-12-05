@@ -6,7 +6,7 @@ import com.translate.lexer.match.RefString;
  * 简易迭代器
  * @author bajdc_000
  */
-public class RefStringIterator extends RefStringIteratorBase {
+public class RefStringIterator extends RefStringIteratorDecorator {
 	
 	private int ptr;
 	private RefString ref;
@@ -28,7 +28,12 @@ public class RefStringIterator extends RefStringIteratorBase {
 	public char current() {
 		return ref.charAt(ptr);
 	}
-
+	
+	@Override
+	public char ahead() {
+		return 0;
+	}
+	
 	@Override
 	public boolean available() {
 		return ptr < length;

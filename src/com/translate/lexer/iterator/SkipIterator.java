@@ -2,52 +2,60 @@ package com.translate.lexer.iterator;
 
 /**
  * 单字符过滤
+ * 
  * @author bajdc_000
  */
 public class SkipIterator extends RefStringIteratorBase {
 
-	private IRefStringIterator iterator;
-	private int index;
 	private char matcher;
-	private char ch;
 
 	public SkipIterator(IRefStringIterator iterator, char matcher) {
-		this.iterator = iterator;
-		this.index = 0;
+		super(iterator);
 		this.matcher = matcher;
-		this.ch = 0;
-	}	
-	
-	@Override
-	public int index() {
-		return index;
 	}
 	
+	private boolean diff(char ch) {
+		return ch != 0 && matcher != ch;
+	}
+
+	@Override
+	public int index() {
+		return available() ? iterator.index() : -1;
+	}
+
 	@Override
 	public char current() {
-		return ch;
+		return available() ? iterator.current() : 0;
+	}
+
+	@Override
+	public char ahead() {
+		return available() ? iterator.ahead() : 0;
 	}
 
 	@Override
 	public boolean available() {
-		if (ch == 0) {
+		if (!iterator.available())
+			return false;
+		if (!diff(iterator.current())) {
 			for (; iterator.available(); iterator.next()) {
-				ch = iterator.current();
-				index = iterator.index();
-				iterator.next();
-				if (matcher != ch) {
-					return true;
+				if (diff(iterator.ahead())) {
+					System.err.println("1 " + iterator.index());
+					System.err.println(">> " + iterator.current());
+					iterator.next();
+					break;
 				}
 			}
-			ch = 0;
-			return false;
+			return iterator.available();
 		}
 		return true;
 	}
 
 	@Override
 	public void next() {
-		ch = 0;
-		available();
+		if (available()) {
+			System.err.println("2 " + iterator.index());
+			iterator.next();
+		}
 	}
 }

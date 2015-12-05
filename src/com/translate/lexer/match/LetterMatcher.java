@@ -19,4 +19,9 @@ public class LetterMatcher implements ILexerMatcher {
 		}
 		return one;
 	}
+	
+	@Override
+	public String toString() {
+		return "Letter";
+	}
 }

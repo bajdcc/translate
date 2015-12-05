@@ -1,6 +1,7 @@
 package com.translate.lexer;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
@@ -8,7 +9,7 @@ import javax.naming.OperationNotSupportedException;
 import com.translate.lexer.env.Env;
 import com.translate.lexer.inst.ILexerInst;
 import com.translate.lexer.inst.LexerInstType;
-import com.translate.lexer.iterator.LookAheadOneIterator;
+import com.translate.lexer.iterator.IRefStringIterator;
 import com.translate.lexer.match.ILexerMatcher;
 import com.translate.lexer.match.IMatcherFactory;
 import com.translate.lexer.match.MatchGroup;
@@ -26,10 +27,10 @@ import com.translate.style.IStyle;
  */
 public abstract class Lexer {
 
-	protected String text;
+	private String text;
 	protected IStyle style;
 
-	private LookAheadOneIterator itText;
+	private IRefStringIterator itText;
 	protected List<ILexerMatcher> matchers;
 
 	private MatchGroup group;
@@ -37,7 +38,7 @@ public abstract class Lexer {
 	public Lexer(String text, IStyle style) {
 		this.text = text;
 		this.style = style;
-		this.itText = new RefString(this.text).iterator().skip('0').lookAhead();
+		this.itText = decorator(new RefString(this.text).iterator().lookAhead());
 		this.group = new MatchGroup();
 		initMatchers();
 	}
@@ -49,6 +50,8 @@ public abstract class Lexer {
 			this.matchers.add(factory.createMatcher(type));
 		}
 	}
+
+	protected abstract IRefStringIterator decorator(IRefStringIterator iterator);
 
 	public String getText() {
 		return text;
@@ -66,10 +69,10 @@ public abstract class Lexer {
 		Env env = new Env();
 		try {
 			while (env.state != -1) {
-				System.out.println(String.format("# State=%d, Index=%d, Current='%c'",
-						env.state, itText.index(), itText.current()));
-				// 按照当前状态，从steps里面取出相应的指令，并且运行指令
-				// 当且仅当指令为stop时，退出
+				System.out.println(String.format("# State=%d, Index=%d, Current='%c'", env.state, itText.index(),
+						itText.current()));
+						// 按照当前状态，从steps里面取出相应的指令，并且运行指令
+						// 当且仅当指令为stop时，退出
 
 				// 运行步骤
 				if (!runStep(env)) {
@@ -91,10 +94,9 @@ public abstract class Lexer {
 	 * @return 是否终止
 	 * @throws OperationNotSupportedException
 	 */
-	private boolean runStep(Env env) throws OperationNotSupportedException {
+	private boolean runStep(Env env) throws Exception {
 		for (LexerStepType type : LexerStepType.values()) {
 			if (env.exitStep) {
-				env.exitStep = false;
 				break;
 			}
 			swapEnvironment(type, env);
@@ -102,7 +104,7 @@ public abstract class Lexer {
 			if (insts != null) {
 				for (env.addr = 0; env.addr != -1 && env.addr < insts.size();) {
 					env.inst = insts.get(env.addr);
-					System.out.println(String.format("[%s] %d %s", type.toString(), env.addr, env.inst));
+					System.out.println(String.format("[%s] %d %s", type.getName(), env.addr, env.inst));
 					if (!runInst(env)) {
 						return false;
 					}
@@ -118,6 +120,9 @@ public abstract class Lexer {
 			env.pass = false;
 			itText.next();
 		}
+		if (env.exitStep) {
+			env.exitStep = false;
+		}
 		return itText.available();
 	}
 
@@ -126,58 +131,83 @@ public abstract class Lexer {
 	 * 
 	 * @param env
 	 *            环境
-	 * @throws OperationNotSupportedException
+	 * @throws Exception
 	 */
-	private boolean runInst(Env env) throws OperationNotSupportedException {
+	private boolean runInst(Env env) throws Exception {
 		ILexerInst inst = env.inst;
 		LexerInstType type = inst.getType();
 		switch (type) {
-		case Exit:
+		case EXEC_PASS:
+			if (env.pass) {
+				env.pass = false;
+				itText.next();
+			}
+			break;
+		case EXIT:
 			env.jmp = true;
 			env.addr = -1;
 			break;
-		case ExitStep:
+		case EXIT_STEP:
+			env.jmp = true;
+			env.addr = -1;
 			env.exitStep = true;
 			break;
-		case If:
+		case IF:
 			if (env.reg == 1) {
 				env.jmp = true;
 				env.addr = inst.getData();
 			}
 			break;
-		case IsRecording:
+		case IS_END:
+			env.reg = itText.available() ? 0 : 1;
+			break;
+		case IS_RECOEDING:
 			env.reg = env.ref != null ? 1 : 0;
 			break;
-		case Jmp:
+		case JMP:
 			env.jmp = true;
 			env.addr = inst.getData();
 			break;
-		case JumpState:
+		case JUMP_STATE:
 			env.state = inst.getData();
 			break;
-		case MatchReg:
+		case LOAD:
+			Integer value = env.scope.get(inst.getData());
+			env.reg = value == null ? 0 : value;
+			break;
+		case MATCH:
 			env.reg = matchers.get(env.reg).match(env.ch);
 			break;
-		case Mov:
+		case MISSING:
+			throw new InputMismatchException("Required: " + matchers.get(inst.getData()).toString());
+		case MOV:
 			env.reg = inst.getData();
 			break;
-		case Not:
+		case NEG:
 			env.reg = env.reg == 0 ? 1 : 0;
 			break;
-		case Pass:
+		case PASS:
 			env.pass = true;
 			break;
-		case RecordEnd:
-			env.ref.setEnd(itText.index());
-			group.addResult(env.ref);
-			env.ref = null;
+		case END_RECORD:
+			if (env.ref != null) {
+				env.ref.setEnd(env.index);
+				group.addResult(env.ref);
+				env.ref = null;
+			}
 			break;
-		case RecordStart:
+		case BEGIN_RECODE:
+			if (env.ref != null) {
+				throw new OperationNotSupportedException("Duplicated recoding");
+			}
 			env.ref = new RefString(text);
-			env.ref.setStart(itText.index());
+			env.ref.setStart(env.index);
 			break;
-		case Stop:
+		case STOP:
 			return false;
+		case STORE:
+			env.scope.put(inst.getData(), env.reg);
+			break;
 		default:
 			throw new OperationNotSupportedException(type.toString());
 		}
@@ -196,21 +226,29 @@ public abstract class Lexer {
 		// 取出当前步骤
 		final List<ILexerStep> steps = style.getLexerStep();
 		switch (type) {
-		case Begin:
+		case BEGIN:
+			env.ch = 0;
 			env.step = steps.get(env.state);
 			break;
-		case Current:
-			// 准备好当前字符和下一个字符
+		case CURRENT:
+			// 准备好当前字符
 			env.ch = itText.current();
+			env.index = itText.index();
 			break;
-		case End:
+		case END:
 			break;
-		case Next:
-			// 准备好当前字符和下一个字符
+		case NEXT:
+			// 准备好下一字符
 			env.ch = itText.ahead();
+			env.index++;
 			break;
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "," + text.toString();
 	}
 }

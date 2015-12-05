@@ -6,8 +6,24 @@ package com.translate.lexer.step;
  */
 public enum LexerStepType {
 
-	Begin,
-	Current,
-	Next,
-	End,
+	BEGIN("Begin"),
+	CURRENT("Current"),
+	NEXT("Next"),
+	END("End"),
+	
+	;
+
+	private String name;
+
+	LexerStepType(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

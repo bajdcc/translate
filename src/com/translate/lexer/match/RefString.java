@@ -51,6 +51,6 @@ public class RefString {
 
 	@Override
 	public String toString() {
-		return ref.substring(start, end + 1);
+		return ref.substring(start, end);
 	}
 }

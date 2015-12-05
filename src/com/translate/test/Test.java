@@ -6,7 +6,12 @@ public class Test {
 
 	public static void main(String[] args) {
 		
-		RmbParser parser = new RmbParser("00001 1234 567890");
-		System.out.println(parser.toString());
+		try {
+			RmbParser parser = new RmbParser("000543565636123gf.46666.");
+			System.out.println(parser.toString());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }

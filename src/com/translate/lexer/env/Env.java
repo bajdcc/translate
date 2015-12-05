@@ -1,5 +1,8 @@
 package com.translate.lexer.env;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.translate.lexer.inst.ILexerInst;
 import com.translate.lexer.match.RefString;
 import com.translate.lexer.step.ILexerStep;
@@ -14,6 +17,11 @@ public class Env {
 	 * 当前状态
 	 */
 	public int state = 0;
+	
+	/**
+	 * 当前字符串位置
+	 */
+	public int index = 0;
 	
 	/**
 	 * 当前指令位置
@@ -59,4 +67,9 @@ public class Env {
 	 * 是否需要退出步骤
 	 */
 	public boolean exitStep = false;
+	
+	/**
+	 * 全局存储空间
+	 */
+	public Map<Integer, Integer> scope = new HashMap<Integer, Integer>();
 }

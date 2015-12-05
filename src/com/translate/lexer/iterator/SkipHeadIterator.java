@@ -2,58 +2,65 @@ package com.translate.lexer.iterator;
 
 /**
  * 单字符过滤
- * <p><b>只过滤开头的连续字符</b></p>
+ * <p>
+ * <b>只过滤开头的连续字符</b>
+ * </p>
+ * 
  * @author bajdc_000
  */
 public class SkipHeadIterator extends RefStringIteratorBase {
 
-	private IRefStringIterator iterator;
-	private int index;
 	private char matcher;
-	private char ch;
-	private boolean running;
+	private boolean skip;
 
 	public SkipHeadIterator(IRefStringIterator iterator, char matcher) {
-		this.iterator = iterator;
-		this.index = 0;
+		super(iterator);
 		this.matcher = matcher;
-		this.ch = 0;
-		this.running = true;
-		next();
-	}	
-	
+		this.skip = true;
+	}
+
+	private boolean diff(char ch) {
+		return ch != 0 && matcher != ch;
+	}
+
 	@Override
 	public int index() {
-		return index;
+		return available() ? iterator.index() : -1;
 	}
-	
+
 	@Override
 	public char current() {
-		return ch;
+		return available() ? iterator.current() : 0;
+	}
+
+	@Override
+	public char ahead() {
+		return available() ? iterator.ahead() : 0;
 	}
 
 	@Override
 	public boolean available() {
-		if (ch == 0) {
-			for (; iterator.available(); iterator.next()) {
-				ch = iterator.current();
-				index = iterator.index();
-				iterator.next();
-				if (!running || matcher != ch) {
-					if (running)
-						running = false;
-					return true;
-				}
-			}
-			ch = 0;
+		if (!iterator.available())
 			return false;
+		if (skip) {
+			if (!diff(matcher)) {
+				for (; iterator.available(); iterator.next()) {
+					if (diff(iterator.ahead())) {
+						skip = false;
+						iterator.next();
+						break;
+					}
+				}
+				return iterator.available();
+			}
 		}
 		return true;
 	}
 
 	@Override
 	public void next() {
-		ch = 0;
-		available();
+		if (available()) {
+			iterator.next();
+		}
 	}
 }

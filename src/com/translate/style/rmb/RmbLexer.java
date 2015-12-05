@@ -1,6 +1,7 @@
 package com.translate.style.rmb;
 
 import com.translate.lexer.Lexer;
+import com.translate.lexer.iterator.IRefStringIterator;
 import com.translate.lexer.match.CharacterMatcher;
 import com.translate.style.IStyle;
 
@@ -18,9 +19,13 @@ public class RmbLexer extends Lexer {
 	private void initMatchers() {
 		this.matchers.add(new CharacterMatcher('.'));
 	}
-
+	
 	@Override
-	public String toString() {		
-		return "RMB Lexer" + "\n" + this.text;
+	protected IRefStringIterator decorator(IRefStringIterator iterator) {
+		return iterator
+				.skipHead('0')
+				.findFirst('.')
+				.take(8)
+				;
 	}	
 }

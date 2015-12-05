@@ -13,6 +13,9 @@ public abstract class Parser {
 	protected Lexer lexer;
 
 	public Parser(String text, IStyle style) {
+		if (text == null) {
+			throw new NullPointerException("text");
+		}
 		lexer = style.createLexer(text);		
 		init();
 	}
@@ -25,10 +28,9 @@ public abstract class Parser {
 		//Tree tree = parse(group);
 		//tree save
 	}
-
+	
 	@Override
 	public String toString() {
-		//print tree
-		return super.toString();
+		return this.getClass().getSimpleName() + "," + lexer.toString();
 	}
 }

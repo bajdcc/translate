@@ -19,4 +19,9 @@ public class NumberMatcher implements ILexerMatcher {
 		}
 		return one;
 	}
+	
+	@Override
+	public String toString() {
+		return "Number";
+	}
 }

@@ -13,9 +13,4 @@ public class RmbParser extends Parser {
 	public RmbParser(String text) {
 		super(text, StyleFactory.singleton().createStyle(StyleType.RMB));		
 	}
-	
-	@Override
-	public String toString() {
-		return "RMB Parser" + "\n" + lexer.toString();
-	}
 }
