@@ -3,6 +3,7 @@ package com.translate.style.rmb;
 import com.translate.lexer.Lexer;
 import com.translate.lexer.iterator.IRefStringIterator;
 import com.translate.lexer.match.CharacterMatcher;
+import com.translate.lexer.match.RefString;
 import com.translate.style.IStyle;
 
 /**
@@ -21,11 +22,13 @@ public class RmbLexer extends Lexer {
 	}
 	
 	@Override
-	protected IRefStringIterator decorator(IRefStringIterator iterator) {
-		return iterator
+	protected IRefStringIterator decorator(String text) {
+		return new RefString(text)
+				.iterator()
 				.skipHead('0')
 				.findFirst('.')
-				.take(8)
+				.take(2)
+				.lookAhead()
 				;
 	}	
 }

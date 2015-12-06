@@ -69,6 +69,11 @@ public class Env {
 	public boolean exitStep = false;
 	
 	/**
+	 * 是否出现错误
+	 */
+	public boolean panic = false;
+	
+	/**
 	 * 全局存储空间
 	 */
 	public Map<Integer, Integer> scope = new HashMap<Integer, Integer>();

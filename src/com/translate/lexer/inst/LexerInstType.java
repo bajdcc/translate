@@ -27,6 +27,7 @@ public enum LexerInstType {
 	NEG("Neg"),
 	LOAD("Load"),
 	STORE("Store"),
+	PANIC("Panic"),
 	
 	// 基于错误
 	MISSING("Missing"),

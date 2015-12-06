@@ -2,6 +2,7 @@ package com.translate.lexer.match;
 
 import com.translate.lexer.iterator.IRefStringIterator;
 import com.translate.lexer.iterator.RefStringIterator;
+import com.translate.lexer.iterator.RefStringReverseIterator;
 
 /**
  * 引用类型的字符串
@@ -34,6 +35,14 @@ public class RefString {
 		this.end = end;
 	}
 	
+	public void normalize() {
+		if (this.start > this.end) {
+			int tmp = this.start;
+			this.start = this.end - 1;
+			this.end = tmp + 1;
+		}
+	}
+	
 	public char charAt(int index) {
 		if (index < length()) {
 			return this.ref.charAt(this.start + index);
@@ -47,6 +56,10 @@ public class RefString {
 	
 	public IRefStringIterator iterator() {
 		return new RefStringIterator(this);
+	}
+	
+	public IRefStringIterator reverse() {
+		return new RefStringReverseIterator(this);
 	}
 
 	@Override

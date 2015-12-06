@@ -8,7 +8,7 @@ package com.translate.lexer.iterator;
  * 
  * @author bajdc_000
  */
-public class SkipHeadIterator extends RefStringIteratorBase {
+public class SkipHeadIterator extends SkipIteratorBase {
 
 	private char matcher;
 	private boolean skip;
@@ -19,25 +19,11 @@ public class SkipHeadIterator extends RefStringIteratorBase {
 		this.skip = true;
 	}
 
-	private boolean diff(char ch) {
+	@Override
+	protected boolean diff(char ch) {
 		return ch != 0 && matcher != ch;
 	}
-
-	@Override
-	public int index() {
-		return available() ? iterator.index() : -1;
-	}
-
-	@Override
-	public char current() {
-		return available() ? iterator.current() : 0;
-	}
-
-	@Override
-	public char ahead() {
-		return available() ? iterator.ahead() : 0;
-	}
-
+	
 	@Override
 	public boolean available() {
 		if (!iterator.available())
@@ -55,12 +41,5 @@ public class SkipHeadIterator extends RefStringIteratorBase {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public void next() {
-		if (available()) {
-			iterator.next();
-		}
 	}
 }

@@ -131,12 +131,18 @@ public class RmbStyle implements IStyle {
 		step = new LexerStep();
 		lexerSteps.add(step);
 		insts = new ArrayList<ILexerInst>();
+		insts.add(InstFactory.createInst(LexerInstType.PANIC));
+		step.setStep(LexerStepType.BEGIN, insts);
+		insts = new ArrayList<ILexerInst>();
 		insts.add(InstFactory.createInst(LexerInstType.MISSING, 1));
 		step.setStep(LexerStepType.CURRENT, insts);
 		
 		/* STATE 3 - Missing Dot */
 		step = new LexerStep();
 		lexerSteps.add(step);
+		insts = new ArrayList<ILexerInst>();
+		insts.add(InstFactory.createInst(LexerInstType.PANIC));
+		step.setStep(LexerStepType.BEGIN, insts);
 		insts = new ArrayList<ILexerInst>();
 		insts.add(InstFactory.createInst(LexerInstType.IS_END));
 		insts.add(InstFactory.createInst(LexerInstType.IF, -1));
@@ -147,12 +153,8 @@ public class RmbStyle implements IStyle {
 		step = new LexerStep();
 		lexerSteps.add(step);
 		insts = new ArrayList<ILexerInst>();
-		insts.add(InstFactory.createInst(LexerInstType.MISSING, 1));
-		step.setStep(LexerStepType.CURRENT, insts);
-		step = new LexerStep();
-		insts = new ArrayList<ILexerInst>();
-		insts.add(InstFactory.createInst(LexerInstType.STOP));
-		step.setStep(LexerStepType.END, insts);
+		insts.add(InstFactory.createInst(LexerInstType.PANIC));
+		step.setStep(LexerStepType.BEGIN, insts);
 	}	
 
 	@Override

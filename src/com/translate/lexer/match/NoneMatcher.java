@@ -22,6 +22,6 @@ public class NoneMatcher implements ILexerMatcher {
 	
 	@Override
 	public String toString() {
-		return "Remains empty";
+		return "End of text";
 	}
 }

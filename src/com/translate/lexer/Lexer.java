@@ -38,7 +38,7 @@ public abstract class Lexer {
 	public Lexer(String text, IStyle style) {
 		this.text = text;
 		this.style = style;
-		this.itText = decorator(new RefString(this.text).iterator().lookAhead());
+		this.itText = decorator(this.text);
 		this.group = new MatchGroup();
 		initMatchers();
 	}
@@ -51,7 +51,7 @@ public abstract class Lexer {
 		}
 	}
 
-	protected abstract IRefStringIterator decorator(IRefStringIterator iterator);
+	protected abstract IRefStringIterator decorator(String text);
 
 	public String getText() {
 		return text;
@@ -123,7 +123,7 @@ public abstract class Lexer {
 		if (env.exitStep) {
 			env.exitStep = false;
 		}
-		return itText.available();
+		return !env.panic;
 	}
 
 	/**
@@ -137,6 +137,21 @@ public abstract class Lexer {
 		ILexerInst inst = env.inst;
 		LexerInstType type = inst.getType();
 		switch (type) {
+		case BEGIN_RECODE:
+			if (env.ref != null) {
+				throw new OperationNotSupportedException("Duplicated recoding");
+			}
+			env.ref = new RefString(text);
+			env.ref.setStart(env.index);
+			break;
+		case END_RECORD:
+			if (env.ref != null) {
+				env.ref.setEnd(env.index);
+				env.ref.normalize();
+				group.addResult(env.ref);
+				env.ref = null;
+			}
+			break;
 		case EXEC_PASS:
 			if (env.pass) {
 				env.pass = false;
@@ -186,22 +201,11 @@ public abstract class Lexer {
 		case NEG:
 			env.reg = env.reg == 0 ? 1 : 0;
 			break;
+		case PANIC:
+			env.panic = true;
+			break;
 		case PASS:
 			env.pass = true;
-			break;
-		case END_RECORD:
-			if (env.ref != null) {
-				env.ref.setEnd(env.index);
-				group.addResult(env.ref);
-				env.ref = null;
-			}
-			break;
-		case BEGIN_RECODE:
-			if (env.ref != null) {
-				throw new OperationNotSupportedException("Duplicated recoding");
-			}
-			env.ref = new RefString(text);
-			env.ref.setStart(env.index);
 			break;
 		case STOP:
 			return false;
