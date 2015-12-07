@@ -15,6 +15,10 @@ public class MatchGroup {
 		results = new ArrayList<RefString>();
 	}
 	
+	public RefString getResult(int index) {
+		return results.get(index);
+	}
+	
 	public List<RefString> getResults() {
 		return results;
 	}

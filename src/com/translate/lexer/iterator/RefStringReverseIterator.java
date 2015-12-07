@@ -13,7 +13,7 @@ public class RefStringReverseIterator extends RefStringIteratorDecorator {
 	
 	public RefStringReverseIterator(RefString ref) {
 		super();
-		this.ptr = ref.length();
+		this.ptr = ref.length() - 1;
 		this.ref = ref;
 	}
 
