@@ -8,8 +8,18 @@ public class DecimalNode extends StoreableNode {
 
 	@Override
 	public void visit(ITreeNodeVisitor visitor) {
-		visitor.visit(this);
-		super.visit(visitor);
+		VisitBag bag = new VisitBag();
+		visitor.visitBegin(this, bag);
+		if (bag.canVisitChilren()) {
+			if (bag.isVisitReverse()) {
+				super.visitReverse(visitor);
+			} else {
+				super.visit(visitor);
+			}
+		}
+		if (bag.canVisitEnd()) {
+			visitor.visitEnd(this);
+		}
 	}
 
 }

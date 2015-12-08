@@ -14,6 +14,7 @@ import com.translate.parser.tree.IntegerAtomNode;
 import com.translate.parser.tree.IntegerNode;
 import com.translate.parser.tree.IntegerUnitNode;
 import com.translate.parser.tree.TreeNode;
+import com.translate.parser.tree.VisitBag;
 import com.translate.style.IStyle;
 
 /**
@@ -137,27 +138,62 @@ public abstract class Parser implements ITreeNodeVisitor {
 	protected abstract boolean parseInternal(PartType type, IRefStringIterator iterator, ITreeNode node) throws Exception;
 
 	@Override
-	public void visit(IntegerNode node) {
+	public void visitBegin(IntegerNode node, VisitBag bag) {
+		// TODO 自动生成的方法存根
 		
 	}
 
 	@Override
-	public void visit(DotNode node) {
+	public void visitBegin(DotNode node, VisitBag bag) {
+		// TODO 自动生成的方法存根
 		
 	}
 
 	@Override
-	public void visit(DecimalNode node) {
+	public void visitBegin(DecimalNode node, VisitBag bag) {
+		// TODO 自动生成的方法存根
 		
 	}
 
 	@Override
-	public void visit(IntegerUnitNode node) {
+	public void visitBegin(IntegerUnitNode node, VisitBag bag) {
+		// TODO 自动生成的方法存根
 		
 	}
 
 	@Override
-	public void visit(IntegerAtomNode node) {
+	public void visitBegin(IntegerAtomNode node, VisitBag bag) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void visitEnd(IntegerNode node) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void visitEnd(DotNode node) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void visitEnd(DecimalNode node) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void visitEnd(IntegerUnitNode node) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void visitEnd(IntegerAtomNode node) {
+		// TODO 自动生成的方法存根
 		
 	}
 

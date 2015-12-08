@@ -8,7 +8,7 @@ import com.translate.parser.tree.IStoreableNode;
 import com.translate.parser.tree.ITreeNode;
 import com.translate.parser.tree.IntegerAtomNode;
 import com.translate.parser.tree.IntegerUnitNode;
-import com.translate.parser.tree.TreeNodeToString;
+import com.translate.parser.visitor.TreeNodeToString;
 import com.translate.style.StyleFactory;
 import com.translate.style.StyleFactory.StyleType;
 
@@ -22,6 +22,7 @@ public class RmbParser extends Parser {
 	public enum NodeDataType {
 		DATA,
 		VALUE,
+		LEVEL,
 	}
 
 	public RmbParser(String text) {
@@ -33,7 +34,7 @@ public class RmbParser extends Parser {
 	 * 初始化
 	 */
 	private void init() {
-		
+		root.visit(new RmbTreeLevelVisitor());
 	}
 	
 	@Override
@@ -106,8 +107,8 @@ public class RmbParser extends Parser {
 			IntegerAtomNode decimal = new IntegerAtomNode();
 			node.addNode(decimal, true);
 			char ch = getIntegerWithCheck(iterator.current(), "Decimal");
-			decimal.set(NodeDataType.DATA.ordinal(), ch);
-			decimal.set(NodeDataType.VALUE.ordinal(), Integer.parseInt(String.valueOf(ch)));
+			decimal.set(NodeDataType.DATA, ch);
+			decimal.set(NodeDataType.VALUE, Integer.parseInt(String.valueOf(ch)));
 			iterator.next();
 			return iterator.available();
 		}
@@ -124,7 +125,7 @@ public class RmbParser extends Parser {
 	private boolean parseDot(IRefStringIterator iterator, ITreeNode node) throws Exception {
 		if (iterator.current() == '.') {
 			IStoreableNode store = node.storeable();
-			store.set(NodeDataType.DATA.ordinal(), iterator.current());
+			store.set(NodeDataType.DATA, iterator.current());
 			iterator.next();
 			return iterator.available();
 		}
@@ -153,11 +154,11 @@ public class RmbParser extends Parser {
 	 */
 	private boolean parseIntegerUnit(IRefStringIterator iterator, ITreeNode node) throws Exception {
 		ITreeNode unit = new IntegerUnitNode();
-		unit.storeable().set(NodeDataType.DATA.ordinal(), " ");
+		unit.storeable().set(NodeDataType.DATA, " ");
 		node.addNode(unit, false);
 		for (int i = 0; i < 4 && iterator.available(); i++) {
 			IntegerAtomNode atom = new IntegerAtomNode();
-			atom.set(NodeDataType.DATA.ordinal(), getIntegerWithCheck(iterator.current(), "Integer"));
+			atom.set(NodeDataType.DATA, getIntegerWithCheck(iterator.current(), "Integer"));
 			iterator.next();
 			unit.addNode(atom, false);
 		}

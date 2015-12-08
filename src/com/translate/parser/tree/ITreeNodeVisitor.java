@@ -7,34 +7,64 @@ package com.translate.parser.tree;
 public interface ITreeNodeVisitor {
 
 	/**
-	 * 遍历
+	 * 遍历开始
 	 * @param node 整数
 	 */
-	void visit(IntegerNode node);
+	void visitBegin(IntegerNode node, VisitBag bag);
 	
 	/**
-	 * 遍历
+	 * 遍历开始
 	 * @param node 小数点
 	 */
-	void visit(DotNode node);
+	void visitBegin(DotNode node, VisitBag bag);
 	
 	/**
-	 * 遍历
+	 * 遍历开始
 	 * @param node 小数
 	 */
-	void visit(DecimalNode node);
+	void visitBegin(DecimalNode node, VisitBag bag);	
+	
+	/**
+	 * 遍历开始
+	 * @param node 整数单元
+	 */
+	void visitBegin(IntegerUnitNode node, VisitBag bag);
+	
+	/**
+	 * 遍历开始
+	 * @param node 整数原子
+	 */
+	void visitBegin(IntegerAtomNode node, VisitBag bag);
 	
 	/////////////////////////////////////////////////
 	
 	/**
-	 * 遍历
-	 * @param node 整数单元
+	 * 遍历结束
+	 * @param node 整数
 	 */
-	void visit(IntegerUnitNode node);
+	void visitEnd(IntegerNode node);
 	
 	/**
-	 * 遍历
+	 * 遍历结束
+	 * @param node 小数点
+	 */
+	void visitEnd(DotNode node);
+	
+	/**
+	 * 遍历结束
+	 * @param node 小数
+	 */
+	void visitEnd(DecimalNode node);	
+	
+	/**
+	 * 遍历结束
+	 * @param node 整数单元
+	 */
+	void visitEnd(IntegerUnitNode node);
+	
+	/**
+	 * 遍历结束
 	 * @param node 整数原子
 	 */
-	void visit(IntegerAtomNode node);
+	void visitEnd(IntegerAtomNode node);
 }
