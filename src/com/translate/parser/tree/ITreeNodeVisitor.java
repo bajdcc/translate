@@ -36,6 +36,12 @@ public interface ITreeNodeVisitor {
 	 */
 	void visitBegin(IntegerAtomNode node, VisitBag bag);
 	
+	/**
+	 * 遍历开始
+	 * @param node 小数原子
+	 */
+	void visitBegin(DecimalAtomNode node, VisitBag bag);	
+	
 	/////////////////////////////////////////////////
 	
 	/**
@@ -67,4 +73,10 @@ public interface ITreeNodeVisitor {
 	 * @param node 整数原子
 	 */
 	void visitEnd(IntegerAtomNode node);
+	
+	/**
+	 * 遍历开始
+	 * @param node 小数原子
+	 */
+	void visitEnd(DecimalAtomNode node);	
 }

@@ -1,5 +1,6 @@
 package com.translate.style.rmb;
 
+import com.translate.parser.tree.DecimalAtomNode;
 import com.translate.parser.tree.DecimalNode;
 import com.translate.parser.tree.DotNode;
 import com.translate.parser.tree.ITreeNodeVisitor;
@@ -26,7 +27,7 @@ public class RmbTreeLevelVisitor implements ITreeNodeVisitor {
 	@Override
 	public void visitBegin(DotNode node, VisitBag bag) {
 		node.set(NodeDataType.LEVEL, 0);
-		bag.setVisitChilren(false);
+		bag.setVisitChildren(false);
 		bag.setVisitEnd(false);
 	}
 
@@ -44,7 +45,13 @@ public class RmbTreeLevelVisitor implements ITreeNodeVisitor {
 	@Override
 	public void visitBegin(IntegerAtomNode node, VisitBag bag) {
 		node.set(NodeDataType.LEVEL, atomLevel);
-		bag.setVisitChilren(false);
+		bag.setVisitChildren(false);
+	}
+	
+	@Override
+	public void visitBegin(DecimalAtomNode node, VisitBag bag) {
+		node.set(NodeDataType.LEVEL, atomLevel);
+		bag.setVisitChildren(false);
 	}
 
 	@Override
@@ -70,6 +77,11 @@ public class RmbTreeLevelVisitor implements ITreeNodeVisitor {
 
 	@Override
 	public void visitEnd(IntegerAtomNode node) {
+		atomLevel++;
+	}
+	
+	@Override
+	public void visitEnd(DecimalAtomNode node) {
 		atomLevel++;
 	}
 

@@ -9,19 +9,15 @@ import com.translate.lexer.match.RefString;
 import com.translate.parser.tree.DecimalNode;
 import com.translate.parser.tree.DotNode;
 import com.translate.parser.tree.ITreeNode;
-import com.translate.parser.tree.ITreeNodeVisitor;
-import com.translate.parser.tree.IntegerAtomNode;
 import com.translate.parser.tree.IntegerNode;
-import com.translate.parser.tree.IntegerUnitNode;
 import com.translate.parser.tree.TreeNode;
-import com.translate.parser.tree.VisitBag;
 import com.translate.style.IStyle;
 
 /**
  * 语法分析器
  * @author bajdc_000
  */
-public abstract class Parser implements ITreeNodeVisitor {
+public abstract class Parser {
 
 	public enum PartType {
 		INTEGER,
@@ -136,66 +132,6 @@ public abstract class Parser implements ITreeNodeVisitor {
 	 * @throws Exception
 	 */
 	protected abstract boolean parseInternal(PartType type, IRefStringIterator iterator, ITreeNode node) throws Exception;
-
-	@Override
-	public void visitBegin(IntegerNode node, VisitBag bag) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitBegin(DotNode node, VisitBag bag) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitBegin(DecimalNode node, VisitBag bag) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitBegin(IntegerUnitNode node, VisitBag bag) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitBegin(IntegerAtomNode node, VisitBag bag) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitEnd(IntegerNode node) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitEnd(DotNode node) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitEnd(DecimalNode node) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitEnd(IntegerUnitNode node) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void visitEnd(IntegerAtomNode node) {
-		// TODO 自动生成的方法存根
-		
-	}
 
 	@Override
 	public String toString() {

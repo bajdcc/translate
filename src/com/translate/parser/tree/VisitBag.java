@@ -13,7 +13,7 @@ public class VisitBag {
 	public boolean canVisitChilren() {
 		return visitChilren;
 	}
-	public void setVisitChilren(boolean visitChilren) {
+	public void setVisitChildren(boolean visitChilren) {
 		this.visitChilren = visitChilren;
 	}
 	public boolean canVisitEnd() {

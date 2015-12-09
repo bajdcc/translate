@@ -1,5 +1,6 @@
 package com.translate.parser.visitor;
 
+import com.translate.parser.tree.DecimalAtomNode;
 import com.translate.parser.tree.DecimalNode;
 import com.translate.parser.tree.DotNode;
 import com.translate.parser.tree.ITreeNodeVisitor;
@@ -41,6 +42,11 @@ public class TreeNodeToString implements ITreeNodeVisitor {
 	public void visitBegin(IntegerAtomNode node, VisitBag bag) {
 		sb.append(node.get(NodeDataType.DATA));
 	}
+	
+	@Override
+	public void visitBegin(DecimalAtomNode node, VisitBag bag) {
+		sb.append(node.get(NodeDataType.DATA));
+	}
 
 	@Override
 	public void visitEnd(IntegerNode node) {
@@ -66,6 +72,11 @@ public class TreeNodeToString implements ITreeNodeVisitor {
 	public void visitEnd(IntegerAtomNode node) {
 		
 	}
+	
+	@Override
+	public void visitEnd(DecimalAtomNode node) {
+		
+	}	
 
 	@Override
 	public String toString() {

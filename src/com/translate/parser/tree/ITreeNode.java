@@ -20,6 +20,18 @@ public interface ITreeNode {
 	void addNode(ITreeNode node, boolean end);
 	
 	/**
+	 * 孩子结点是否为空
+	 * @return 结点是否为空
+	 */
+	boolean isEmptyNodes();
+	
+	/**
+	 * 孩子结点数
+	 * @return 结点数
+	 */
+	int size();
+	
+	/**
 	 * 存储接口
 	 * @return 存储接口
 	 */

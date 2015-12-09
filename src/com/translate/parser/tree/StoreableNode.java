@@ -38,6 +38,16 @@ public abstract class StoreableNode implements ITreeNode, IStoreableNode {
 			nodes.add(0, node);
 		}
 	}
+	
+	@Override
+	public boolean isEmptyNodes() {
+		return nodes.isEmpty();
+	}
+	
+	@Override
+	public int size() {
+		return nodes.size();
+	}
 
 	@Override
 	public void set(NodeDataType key, Object value) {

@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import com.translate.lexer.iterator.IRefStringIterator;
 import com.translate.lexer.match.RefString;
 import com.translate.parser.Parser;
+import com.translate.parser.tree.DecimalAtomNode;
 import com.translate.parser.tree.IStoreableNode;
 import com.translate.parser.tree.ITreeNode;
 import com.translate.parser.tree.IntegerAtomNode;
@@ -88,11 +89,11 @@ public class RmbParser extends Parser {
 	 * @return 数字
 	 * @throws Exception
 	 */
-	private char getIntegerWithCheck(char ch, String message) throws Exception {
+	private int getIntegerWithCheck(char ch, String message) throws Exception {
 		if (!Character.isDigit(ch)) {
 			throw new InputMismatchException(message);
 		}
-		return ch;
+		return Integer.parseInt(String.valueOf(ch));
 	}
 
 	/**
@@ -104,11 +105,10 @@ public class RmbParser extends Parser {
 	 */
 	private boolean parseDecimal(IRefStringIterator iterator, ITreeNode node) throws Exception {
 		if (iterator.available()) {
-			IntegerAtomNode decimal = new IntegerAtomNode();
+			DecimalAtomNode decimal = new DecimalAtomNode();
 			node.addNode(decimal, true);
-			char ch = getIntegerWithCheck(iterator.current(), "Decimal");
-			decimal.set(NodeDataType.DATA, ch);
-			decimal.set(NodeDataType.VALUE, Integer.parseInt(String.valueOf(ch)));
+			decimal.set(NodeDataType.DATA, iterator.current());
+			decimal.set(NodeDataType.VALUE, getIntegerWithCheck(iterator.current(), "Decimal"));
 			iterator.next();
 			return iterator.available();
 		}
@@ -158,16 +158,23 @@ public class RmbParser extends Parser {
 		node.addNode(unit, false);
 		for (int i = 0; i < 4 && iterator.available(); i++) {
 			IntegerAtomNode atom = new IntegerAtomNode();
-			atom.set(NodeDataType.DATA, getIntegerWithCheck(iterator.current(), "Integer"));
+			atom.set(NodeDataType.DATA, iterator.current());
+			atom.set(NodeDataType.VALUE, getIntegerWithCheck(iterator.current(), "Integer"));
 			iterator.next();
 			unit.addNode(atom, false);
 		}
 		return iterator.available();
 	}
+	
+	public String toNumberString() {
+		TreeNodeToString visitor = new TreeNodeToString();
+		root.visit(visitor);
+		return visitor.toString();
+	}
 
 	@Override
 	public String toString() {
-		TreeNodeToString visitor = new TreeNodeToString();
+		RmbTreeToString visitor = new RmbTreeToString();
 		root.visit(visitor);
 		return visitor.toString();
 	}
